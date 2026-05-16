@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.anfsanchezcu.briefcase.Entities.Experience;
 import com.anfsanchezcu.briefcase.Entities.Skill;
-import com.anfsanchezcu.briefcase.Servicies.ExperienceServiceImp;
+import com.anfsanchezcu.briefcase.Servicies.ExperienceService;
 
 @SpringBootApplication
 public class BriefcaseApplication {

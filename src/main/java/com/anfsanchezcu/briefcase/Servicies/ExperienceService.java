@@ -15,7 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 
 
 @Service
-public class ExperienceServiceImp implements ExperienceServiceInterface {
+public class ExperienceService implements ExperienceServiceInterface {
   @Autowired
   private ExperienceRepository repository;
 

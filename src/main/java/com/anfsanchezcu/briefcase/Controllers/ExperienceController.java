@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anfsanchezcu.briefcase.Entities.Experience;
-import com.anfsanchezcu.briefcase.Servicies.ExperienceServiceImp;
+import com.anfsanchezcu.briefcase.Servicies.ExperienceService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class ExperienceController {
 
   @Autowired
-  private ExperienceServiceImp Service;
+  private ExperienceService Service;
 
   @GetMapping()
   public List<Experience> getExperiences(){
