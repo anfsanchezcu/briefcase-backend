@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "proyects")
-public class Proyect {
+public class Project {
   
 
   @Id
@@ -37,18 +37,18 @@ public class Proyect {
 
   @ManyToMany
   @JoinTable(
-    name = "proyects_skills",
-    joinColumns = @JoinColumn(name = "id_proyect"),
+    name = "projects_skills",
+    joinColumns = @JoinColumn(name = "id_project"),
     inverseJoinColumns = @JoinColumn(name = "id_skill")
   )
   private List<Skill> skills;
 
 
-  public Proyect() {
+  public Project() {
     skills = new ArrayList<>();
   }
 
-  public Proyect(Long id, String title, String description, String githubLink, String demoUrl, String imageUrl,
+  public Project(Long id, String title, String description, String githubLink, String demoUrl, String imageUrl,
       List<Skill> skills) {
     this.id = id;
     this.title = title;

@@ -3,6 +3,7 @@ package com.anfsanchezcu.briefcase.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,8 +29,12 @@ public class Experience {
   @Column(name = "image")
   private String imageLink;
 
-  @ManyToMany
-  @JoinTable(name = "experiences_skills", joinColumns = @JoinColumn(name = "id_experience"), inverseJoinColumns = @JoinColumn(name = "id_skill"))
+  @ManyToMany(cascade = CascadeType.PERSIST)
+  @JoinTable(
+    name = "experiences_skills",
+    joinColumns = @JoinColumn(name = "id_experience"),
+    inverseJoinColumns = @JoinColumn(name = "id_skill")
+  )
   private List<Skill> skills;
 
   public Experience() {
