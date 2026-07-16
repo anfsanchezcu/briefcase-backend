@@ -1,7 +1,5 @@
 package com.anfsanchezcu.briefcase.Exceptions;
 import java.util.Date;
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -14,6 +12,20 @@ import com.anfsanchezcu.briefcase.models.Error;
 public class GlobalHandlerException {
 
   
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<Error> handleIllegalArgumentException(
+          IllegalArgumentException ex) {
+
+      Error error = new Error(
+              "Validation failed",
+              ex.getMessage(),
+              HttpStatus.BAD_REQUEST.value(),
+              new Date()
+      );
+
+      return ResponseEntity.badRequest().body(error);
+  }
+
 
   @ExceptionHandler(BindException.class)
   public ResponseEntity<Error> handleBindException(BindException ex) {

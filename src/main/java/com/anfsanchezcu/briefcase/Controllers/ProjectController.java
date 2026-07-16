@@ -39,7 +39,12 @@ public class ProjectController {
   public ResponseEntity<Project> saveProject(
     @Valid @ModelAttribute ProjectDTO projectDTO,
     @RequestParam("image") MultipartFile file) 
-    {
+    { 
+      if (file.isEmpty() && projectDTO.getImageURL() == null) 
+        throw new IllegalArgumentException("Image is required");
+
+      
+      
       Project BuildedProject = projectService.buildProject(projectDTO,file);
       System.out.println("BuildedProject: " + BuildedProject);
 

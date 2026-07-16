@@ -27,7 +27,7 @@ public class Experience {
   private String date;
 
   @Column(name = "image")
-  private String imageLink;
+  private String imageURL;
 
   @ManyToMany(cascade = CascadeType.PERSIST)
   @JoinTable(
@@ -41,14 +41,14 @@ public class Experience {
     skills = new ArrayList<>();
   }
 
-  public Experience(Long id, String company, String position, String description, String date, String imageLink,
+  public Experience(Long id, String company, String position, String description, String date, String imageURL,
       List<Skill> skills) {
     this.id = id;
     this.company = company;
     this.position = position;
     this.description = description;
     this.date = date;
-    this.imageLink = imageLink;
+    this.imageURL = imageURL;
     this.skills = skills;
   }
 
@@ -92,12 +92,12 @@ public class Experience {
     this.date = date;
   }
 
-  public String getImageLink() {
-    return imageLink;
+  public String getImageURL() {
+    return imageURL;
   }
 
-  public void setImageLink(String imageLink) {
-    this.imageLink = imageLink;
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 
   public List<Skill> getSkills() {

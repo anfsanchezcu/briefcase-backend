@@ -1,8 +1,5 @@
 package com.anfsanchezcu.briefcase.DTO;
-
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -20,22 +17,20 @@ public class ProjectDTO {
   @Size(min = 50, max = 200, message = "GitHub link must be between 50 and 200 characters")
   private String github;
 
+  private String imageURL;
   private String demo;
-  private MultipartFile imageFile;
-
   private List<SkillDTO> skills;
-
   public ProjectDTO() {
 
   }
 
-  public ProjectDTO(String title, String description, String githubLink, String demoUrl, MultipartFile imageFile,
+  public ProjectDTO(String title, String description, String githubLink, String demoUrl, String imageFile,
       List<SkillDTO> skills) {
     this.title = title;
     this.description = description;
     this.github = githubLink;
     this.demo = demoUrl;
-    this.imageFile = imageFile;
+    this.imageURL = imageFile;
     this.skills = skills;
   }
 
@@ -71,12 +66,12 @@ public class ProjectDTO {
     this.demo = demoUrl;
   }
 
-  public MultipartFile getImageFile() {
-    return imageFile;
+  public String getImageURL() {
+    return imageURL;
   }
 
-  public void setImageFile(MultipartFile imageFile) {
-    this.imageFile = imageFile;
+  public void setImageURL(String imageURL) {
+    this.imageURL = imageURL;
   }
 
   public List<SkillDTO> getSkills() {

@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.anfsanchezcu.briefcase.Controllers.CloudinaryController;
 import com.anfsanchezcu.briefcase.DTO.ExperienceDTO;
 import com.anfsanchezcu.briefcase.Entities.Experience;
-import com.anfsanchezcu.briefcase.Entities.Skill;
 import com.anfsanchezcu.briefcase.Repositories.ExperienceRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -22,6 +23,9 @@ public class ExperienceService implements ExperienceServiceInterface {
   @Autowired
   private SkillService skillService;
 
+  @Autowired
+  private CloudinaryController cloudinaryController;
+
   @Override
   @Transactional
   public void delete(Long id) {
@@ -32,19 +36,19 @@ public class ExperienceService implements ExperienceServiceInterface {
 
   @Override
   @Transactional
-  public Experience update(Long id, ExperienceDTO experience) {
+  public Experience update(Long id, Experience experienceEntity) {
     Optional<Experience> experienceDB = repository.findById(id);
 
     if (!experienceDB.isPresent())
       experienceDB.orElseThrow(() -> new EntityNotFoundException());
 
+
     Experience experienceUpdate = experienceDB.get();
-    experienceUpdate.setCompany(experience.getCompany());
-    experienceUpdate.setPosition(experience.getPosition());
-    experienceUpdate.setDescription(experience.getDescription());
-    experienceUpdate.setDate(experience.getDate());
-    experienceUpdate.setImageLink(experience.getImageLink());
-    experienceUpdate.setSkills(skillService.saveAll(experience.getSkills()));
+    experienceUpdate.setCompany(experienceEntity.getCompany());
+    experienceUpdate.setPosition(experienceEntity.getPosition());
+    experienceUpdate.setDescription(experienceEntity.getDescription());
+    experienceUpdate.setDate(experienceEntity.getDate());
+    experienceUpdate.setImageURL(experienceEntity.getImageURL());
     return repository.save(experienceUpdate);
   }
 
@@ -56,16 +60,27 @@ public class ExperienceService implements ExperienceServiceInterface {
 
   @Override
   @Transactional
-  public Experience save(ExperienceDTO experience) {
-    List<Skill> skills = skillService.saveAll(experience.getSkills());
+  public Experience save(Experience experienceEntity) {
+    return repository.save(experienceEntity);
+  }
+
+
+  public Experience buildExperience(ExperienceDTO experienceDTO, MultipartFile file) {
+
+    String imageUrl = "";
+    if (file != null && !file.isEmpty())
+      imageUrl = cloudinaryController.upload("projects", file);
+    else if (experienceDTO.getImageURL() != null)
+      imageUrl = experienceDTO.getImageURL();
 
     Experience experienceEntity = new Experience();
-    experienceEntity.setCompany(experience.getCompany());
-    experienceEntity.setPosition(experience.getPosition());
-    experienceEntity.setDescription(experience.getDescription());
-    experienceEntity.setDate(experience.getDate());
-    experienceEntity.setImageLink(experience.getImageLink());
-    experienceEntity.setSkills(skills);
-    return repository.save(experienceEntity);
+    experienceEntity.setCompany(experienceDTO.getCompany());
+    experienceEntity.setPosition(experienceDTO.getPosition());
+    experienceEntity.setDescription(experienceDTO.getDescription());
+    experienceEntity.setDate(experienceDTO.getDate());
+    experienceEntity.setImageURL(imageUrl);
+    experienceEntity.setSkills(skillService.saveAll(experienceDTO.getSkills()));
+
+    return experienceEntity;
   }
 }
