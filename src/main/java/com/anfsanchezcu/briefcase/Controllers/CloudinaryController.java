@@ -24,10 +24,19 @@ public class CloudinaryController{
   
 
   @PostMapping()
-  public ResponseEntity<Map<String, String>> upload(@RequestParam String folder,@RequestParam("image") MultipartFile file) throws IOException {
-
+  public ResponseEntity<Map<String, String>> directUpload(@RequestParam String folder,@RequestParam("image") MultipartFile file) throws IOException {
       String imageUrl = cloudinaryService.upload(file, folder);
-
       return ResponseEntity.ok(Map.of("imageUrl", imageUrl));
+  }
+
+  public String upload(String folder, MultipartFile file){
+    String imageUrl;
+    try {
+      imageUrl = cloudinaryService.upload(file, folder);
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to upload project image");
+    }
+
+    return imageUrl;
   }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anfsanchezcu.briefcase.DTO.ExperienceDTO;
 import com.anfsanchezcu.briefcase.Entities.Experience;
 import com.anfsanchezcu.briefcase.Servicies.ExperienceService;
 
@@ -33,7 +34,7 @@ public class ExperienceController {
   }
 
   @PostMapping()
-  public ResponseEntity<Experience> saveExperience(@RequestBody Experience experience){
+  public ResponseEntity<Experience> saveExperience(@RequestBody ExperienceDTO experience){
     Experience savedExperience = Service.save(experience);
     return ResponseEntity.status(HttpStatus.CREATED).body(savedExperience);
   }
@@ -45,7 +46,7 @@ public class ExperienceController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Experience> UpdateExperience(@PathVariable Long id, @RequestBody Experience experience) {
+  public ResponseEntity<Experience> UpdateExperience(@PathVariable Long id, @RequestBody ExperienceDTO experience) {
     Experience entity = Service.update(id, experience);
     return ResponseEntity.ok(entity);
   }

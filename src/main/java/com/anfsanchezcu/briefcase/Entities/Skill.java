@@ -1,16 +1,10 @@
 package com.anfsanchezcu.briefcase.Entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.annotations.ManyToAny;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,7 +15,6 @@ public class Skill {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   private Long id;
 
   @Column(nullable = false, unique = true)
@@ -31,15 +24,8 @@ public class Skill {
   @Column(nullable = true)
   private String image;
 
-  @ManyToMany(mappedBy = "skills")
-  private List<Experience> experiences;
-
-  @ManyToMany(mappedBy = "skills")
-  private List<Project> projecs;
-
+  
   public Skill() {
-    experiences = new ArrayList<>();
-    projecs = new ArrayList<>();
   }
 
   public Skill(Long id, String name, String image) {
@@ -47,9 +33,6 @@ public class Skill {
     this.name = name;
     this.image = image;
   }
-
-
-
 
 
   public Long getId() {

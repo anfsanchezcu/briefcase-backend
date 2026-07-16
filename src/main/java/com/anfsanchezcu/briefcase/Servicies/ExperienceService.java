@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.anfsanchezcu.briefcase.DTO.ExperienceDTO;
 import com.anfsanchezcu.briefcase.Entities.Experience;
 import com.anfsanchezcu.briefcase.Entities.Skill;
 import com.anfsanchezcu.briefcase.Repositories.ExperienceRepository;
-import com.anfsanchezcu.briefcase.Repositories.SkillRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -32,7 +32,7 @@ public class ExperienceService implements ExperienceServiceInterface {
 
   @Override
   @Transactional
-  public Experience update(Long id, Experience experience) {
+  public Experience update(Long id, ExperienceDTO experience) {
     Optional<Experience> experienceDB = repository.findById(id);
 
     if (!experienceDB.isPresent())
@@ -44,8 +44,8 @@ public class ExperienceService implements ExperienceServiceInterface {
     experienceUpdate.setDescription(experience.getDescription());
     experienceUpdate.setDate(experience.getDate());
     experienceUpdate.setImageLink(experience.getImageLink());
-    experienceUpdate.setSkills(experience.getSkills());
-    return this.save(experienceUpdate);
+    experienceUpdate.setSkills(skillService.saveAll(experience.getSkills()));
+    return repository.save(experienceUpdate);
   }
 
   @Override
@@ -56,9 +56,16 @@ public class ExperienceService implements ExperienceServiceInterface {
 
   @Override
   @Transactional
-  public Experience save(Experience experience) {
+  public Experience save(ExperienceDTO experience) {
     List<Skill> skills = skillService.saveAll(experience.getSkills());
-    experience.setSkills(skills);
-    return repository.save(experience);
+
+    Experience experienceEntity = new Experience();
+    experienceEntity.setCompany(experience.getCompany());
+    experienceEntity.setPosition(experience.getPosition());
+    experienceEntity.setDescription(experience.getDescription());
+    experienceEntity.setDate(experience.getDate());
+    experienceEntity.setImageLink(experience.getImageLink());
+    experienceEntity.setSkills(skills);
+    return repository.save(experienceEntity);
   }
 }

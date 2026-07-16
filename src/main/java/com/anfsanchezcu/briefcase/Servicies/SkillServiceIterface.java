@@ -2,6 +2,7 @@ package com.anfsanchezcu.briefcase.Servicies;
 
 import java.util.List;
 
+import com.anfsanchezcu.briefcase.DTO.SkillDTO;
 import com.anfsanchezcu.briefcase.Entities.Skill;
 
 public interface SkillServiceIterface {
@@ -9,7 +10,7 @@ public interface SkillServiceIterface {
 
   public Skill save(Skill skill);
 
-  public List<Skill> saveAll(List<Skill> skill);
+  public List<Skill> saveAll(List<SkillDTO> skill);
 
   public void delete(Long id);
 

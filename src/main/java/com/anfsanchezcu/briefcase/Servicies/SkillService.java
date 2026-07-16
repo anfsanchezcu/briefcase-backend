@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.anfsanchezcu.briefcase.Controllers.CloudinaryController;
+import com.anfsanchezcu.briefcase.DTO.SkillDTO;
 import com.anfsanchezcu.briefcase.Entities.Skill;
 import com.anfsanchezcu.briefcase.Repositories.SkillRepository;
 
@@ -17,7 +19,9 @@ import jakarta.persistence.EntityNotFoundException;
 public class SkillService implements SkillServiceIterface {
 
   @Autowired
-  SkillRepository repository;
+  private SkillRepository repository;
+  @Autowired
+  private CloudinaryController cloudinaryController;
 
   @Override
   @Transactional
@@ -37,21 +41,33 @@ public class SkillService implements SkillServiceIterface {
   @Transactional
   public Skill save(Skill skill) {
     String skillName = skill.getName().trim().toUpperCase();
+    String skillImage = skill.getImage();
 
     Optional<Skill> skillOptional = repository.findFirstByNameIgnoreCase(skillName);
-    if (skillOptional.isPresent()) 
+    if (skillOptional.isPresent())
       return skillOptional.get();
-    
+
     skill.setName(skillName);
+    skill.setImage(skillImage);
     return repository.save(skill);
   }
 
   @Override
   @Transactional
-  public List<Skill> saveAll(List<Skill> skills) {
+  public List<Skill> saveAll(List<SkillDTO> skills) {
     List<Skill> savedSkills = new ArrayList<>();
-    for (Skill skill : skills)
-      savedSkills.add(this.save(skill));
+    for (SkillDTO skill : skills){
+      Skill skillEntity = new Skill();
+      String imgUrl = "Hola";
+      
+      if(skill.getImage() != null){
+        imgUrl = cloudinaryController.upload("skills", skill.getImage());
+      } 
+
+      skillEntity.setName(skill.getName());
+      skillEntity.setImage(imgUrl);
+      savedSkills.add(this.save(skillEntity));
+    }
 
     return savedSkills;
   }

@@ -23,6 +23,7 @@ public class Project {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  
   private String title;
   private String description;
 
@@ -48,9 +49,8 @@ public class Project {
     skills = new ArrayList<>();
   }
 
-  public Project(Long id, String title, String description, String githubLink, String demoUrl, String imageUrl,
+  public Project( String title, String description, String githubLink, String demoUrl, String imageUrl,
       List<Skill> skills) {
-    this.id = id;
     this.title = title;
     this.description = description;
     this.githubLink = githubLink;
