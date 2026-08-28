@@ -1,5 +1,6 @@
 package com.anfsanchezcu.briefcase.Servicies;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +55,14 @@ public class ExperienceService implements ExperienceServiceInterface {
 
   @Override
   @Transactional(readOnly = true)
-  public List<Experience> getExperiences() {
-    return (List<Experience>) repository.findAll();
+  public List<ExperienceDTO> getExperiences() {
+    List <Experience> ListExperience= (List <Experience>) repository.findAll();
+    List<ExperienceDTO> ListDTO = new ArrayList<>();
+
+    for (Experience experience : ListExperience) {
+      ListDTO.add(experience.transformToDTO());
+    }
+    return ListDTO;
   }
 
   @Override
@@ -79,7 +86,7 @@ public class ExperienceService implements ExperienceServiceInterface {
     experienceEntity.setDescription(experienceDTO.getDescription());
     experienceEntity.setDate(experienceDTO.getDate());
     experienceEntity.setImageURL(imageUrl);
-    experienceEntity.setSkills(skillService.saveAll(experienceDTO.getSkills()));
+    experienceEntity.setSkills(skillService.saveAll(experienceDTO.getSkillsList()));
 
     return experienceEntity;
   }

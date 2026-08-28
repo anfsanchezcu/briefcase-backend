@@ -1,5 +1,10 @@
 package com.anfsanchezcu.briefcase.DTO;
+
+import java.util.ArrayList;
 import java.util.List;
+
+import com.anfsanchezcu.briefcase.Entities.Skill;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -10,28 +15,40 @@ public class ProjectDTO {
   private String title;
 
   @NotBlank(message = "Description is required")
-  @Size(max = 500, message = "Description must be at most 500 characters")
+  @Size(max = 1000, message = "Description must be at most 500 characters")
   private String description;
 
   @NotBlank(message = "GitHub link is required")
-  @Size(min = 50, max = 200, message = "GitHub link must be between 50 and 200 characters")
+  @Size(min = 10, max = 200, message = "GitHub link must be between 50 and 200 characters")
   private String github;
 
   private String imageURL;
   private String demo;
-  private List<SkillDTO> skills;
+  private String skills;
+
   public ProjectDTO() {
 
   }
 
   public ProjectDTO(String title, String description, String githubLink, String demoUrl, String imageFile,
-      List<SkillDTO> skills) {
+      String skills) {
     this.title = title;
     this.description = description;
     this.github = githubLink;
     this.demo = demoUrl;
     this.imageURL = imageFile;
     this.skills = skills;
+  }
+
+  public List<Skill> trasnformToSkillList() {
+    String arraySkills[] = this.skills.split(",");
+    List<Skill> skillsDTOList = new ArrayList<>();
+
+    for (String skillName : arraySkills) {
+      Skill skill = new Skill(skillName, null);
+      skillsDTOList.add(skill);
+    }
+    return skillsDTOList;
   }
 
   public String getTitle() {
@@ -58,11 +75,11 @@ public class ProjectDTO {
     this.github = github;
   }
 
-  public String getDemoUrl() {
+  public String getDemo() {
     return demo;
   }
 
-  public void setDemoUrl(String demoUrl) {
+  public void setDemo(String demoUrl) {
     this.demo = demoUrl;
   }
 
@@ -74,12 +91,18 @@ public class ProjectDTO {
     this.imageURL = imageURL;
   }
 
-  public List<SkillDTO> getSkills() {
+  public String getSkills() {
     return skills;
   }
 
-  public void setSkills(List<SkillDTO> skills) {
+  public void setSkills(String skills) {
     this.skills = skills;
+  }
+
+  @Override
+  public String toString() {
+    return "ProjectDTO [title=" + title + ", description=" + description + ", github=" + github + ", imageURL="
+        + imageURL + ", demo=" + demo + ", skills=" + skills + "]";
   }
 
 }

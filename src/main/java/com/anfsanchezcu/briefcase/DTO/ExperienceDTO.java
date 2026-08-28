@@ -1,6 +1,9 @@
 package com.anfsanchezcu.briefcase.DTO;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.anfsanchezcu.briefcase.Entities.Skill;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -20,7 +23,7 @@ public class ExperienceDTO {
   private String date;
   
   private String imageURL;
-  private List<SkillDTO> skills;
+  private String skills;
   public String getCompany() {
     return company;
   }
@@ -51,11 +54,34 @@ public class ExperienceDTO {
   public void setImageURL(String imageURL) {
     this.imageURL = imageURL;
   }
-  public List<SkillDTO> getSkills() {
+  public String getSkills() {
     return skills;
   }
-  public void setSkills(List<SkillDTO> skills) {
+  public void setSkills(String skills) {
     this.skills = skills;
+  }
+
+  public void setSkillsToDTO(List<Skill> skills) {
+    String skillsResult = "";
+    for (int i = 0; i<skills.size(); i++ ) {
+
+      skillsResult += skills.get(i).getName();
+      if(i != skills.size())
+        skillsResult += ",";
+    }
+    this.skills = skillsResult;
+  }
+
+  public List<Skill> getSkillsList() {
+    List<Skill> skillsList = new ArrayList<>();
+    String skills[] = this.skills.split(",");
+
+    for (String name : skills) {
+      Skill skill = new Skill(name, null);
+      skillsList.add(skill);
+    }
+
+    return skillsList;
   }
 
   

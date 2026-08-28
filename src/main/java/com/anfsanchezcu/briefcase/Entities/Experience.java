@@ -3,6 +3,8 @@ package com.anfsanchezcu.briefcase.Entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.anfsanchezcu.briefcase.DTO.ExperienceDTO;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -106,6 +108,18 @@ public class Experience {
 
   public void setSkills(List<Skill> skills) {
     this.skills = skills;
+  }
+
+  public ExperienceDTO transformToDTO(){
+    ExperienceDTO experienceDTO = new ExperienceDTO();
+    experienceDTO.setCompany(this.company);
+    experienceDTO.setDate(this.getDate());
+    experienceDTO.setDescription(this.description);
+    experienceDTO.setImageURL(this.imageURL);
+    experienceDTO.setPosition(this.position);
+    experienceDTO.setSkillsToDTO(this.skills);
+
+    return experienceDTO;
   }
 
 }

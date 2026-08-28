@@ -33,6 +33,10 @@ public class Skill {
     this.name = name;
     this.image = image;
   }
+  public Skill(String name, String image) {
+    this.name = name;
+    this.image = image;
+  }
 
 
   public Long getId() {

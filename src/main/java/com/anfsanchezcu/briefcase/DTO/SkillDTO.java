@@ -2,8 +2,7 @@ package com.anfsanchezcu.briefcase.DTO;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class 
-SkillDTO {
+public class SkillDTO {
  
   private String name;
   private MultipartFile image;
@@ -19,7 +18,5 @@ SkillDTO {
   public void setImage(MultipartFile image) {
     this.image = image;
   }
-  
-
   
 }

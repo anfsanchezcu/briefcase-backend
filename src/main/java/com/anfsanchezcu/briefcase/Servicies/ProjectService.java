@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.anfsanchezcu.briefcase.Controllers.CloudinaryController;
 import com.anfsanchezcu.briefcase.DTO.ProjectDTO;
+import com.anfsanchezcu.briefcase.DTO.ProjectPreviewtDTO;
 import com.anfsanchezcu.briefcase.Entities.Project;
 import com.anfsanchezcu.briefcase.Entities.Skill;
 import com.anfsanchezcu.briefcase.Repositories.ProjectsRespository;
@@ -22,6 +23,7 @@ public class ProjectService implements ProjectServiceInterface {
 
   @Autowired
   SkillService skillService;
+
   @Autowired
   private CloudinaryController cloudinaryController;
 
@@ -32,10 +34,15 @@ public class ProjectService implements ProjectServiceInterface {
     repository.delete(projectDB);
   }
 
+  public ProjectDTO getProjectById(Long id) {
+    Project project = repository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+    return convertToDTO(project);
+  }
+
   @Override
   @Transactional
-  public List<Project> getProyects() {
-    return (List<Project>) repository.findAll();
+  public List<ProjectPreviewtDTO> getProjects() { 
+    return repository.findAllPreviewsDTO();
   }
 
   @Override
@@ -54,13 +61,13 @@ public class ProjectService implements ProjectServiceInterface {
 
     List<Skill> skills = new ArrayList<>();
     if (skillService != null && projectDTO.getSkills() != null)
-      skills.addAll(skillService.saveAll(projectDTO.getSkills()));
+      skills.addAll(skillService.saveAll(projectDTO.trasnformToSkillList()));
 
     Project projectEntity = new Project();
     projectEntity.setTitle(projectDTO.getTitle());
     projectEntity.setDescription(projectDTO.getDescription());
     projectEntity.setGithubLink(projectDTO.getGithub());
-    projectEntity.setDemoUrl(projectDTO.getDemoUrl());
+    projectEntity.setDemoUrl(projectDTO.getDemo());
     projectEntity.setImageUrl(imageUrl);
     projectEntity.setSkills(skills);
 
@@ -73,7 +80,7 @@ public class ProjectService implements ProjectServiceInterface {
     Project projectDB = repository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException());
 
-    projectDB.setDemoUrl(project.getDemoUrl());
+    projectDB.setDemoUrl(project.getDemo());
     projectDB.setDescription(project.getDescription());
     projectDB.setGithubLink(project.getGithub());
     projectDB.setTitle(project.getTitle());
@@ -81,4 +88,26 @@ public class ProjectService implements ProjectServiceInterface {
     return null;
   }
 
+
+  public ProjectDTO convertToDTO(Project project) {
+    ProjectDTO projectDTO = new ProjectDTO();
+    projectDTO.setTitle(project.getTitle());
+    projectDTO.setDescription(project.getDescription());
+    projectDTO.setGithub(project.getGithubLink());
+    projectDTO.setDemo(project.getDemoUrl());
+    projectDTO.setImageURL(project.getImageUrl());
+    projectDTO.setSkills(convertSkillsToDTO(project.getSkills()));
+    return projectDTO;
+  }
+
+  private String convertSkillsToDTO(List<Skill> skillsEntity) {
+    String skillsDTO = "";
+    for (int i = 0; i < skillsEntity.size(); i++) {
+      skillsDTO += skillsEntity.get(i).getName();
+      if(i != skillsEntity.size())
+        skillsDTO +=",";
+    }
+
+    return skillsDTO;
+  }
 }

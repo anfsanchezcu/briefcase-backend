@@ -1,9 +1,11 @@
 package com.anfsanchezcu.briefcase.Servicies;
 import java.util.List;
+
+import com.anfsanchezcu.briefcase.DTO.ExperienceDTO;
 import com.anfsanchezcu.briefcase.Entities.Experience;
 
 public interface ExperienceServiceInterface {
-  public List<Experience> getExperiences();
+  public List<ExperienceDTO> getExperiences();
 
   public Experience save(Experience experience);
 

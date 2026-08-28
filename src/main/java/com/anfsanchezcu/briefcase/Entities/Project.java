@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "proyects")
+@Table(name = "proyects")//TO DO
 public class Project {
   
 
@@ -58,12 +58,6 @@ public class Project {
     this.imageUrl = imageUrl;
     this.skills = skills;
   }
-
-
-
-
-
-
 
   public Long getId() {
     return id;
@@ -118,5 +112,11 @@ public class Project {
     this.skills = skills;
   }
 
+  @Override
+  public String toString() {
+    return "Project [id=" + id + ", title=" + title + ", description=" + description + ", githubLink=" + githubLink
+        + ", demoUrl=" + demoUrl + ", imageUrl=" + imageUrl + ", skills=" + skills + "]";
+  }
+  
   
 }

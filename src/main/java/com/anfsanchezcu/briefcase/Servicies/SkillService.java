@@ -16,7 +16,7 @@ import com.anfsanchezcu.briefcase.Repositories.SkillRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
-public class SkillService implements SkillServiceIterface {
+public class SkillService implements SkillServiceInterface {
 
   @Autowired
   private SkillRepository repository;
@@ -54,21 +54,11 @@ public class SkillService implements SkillServiceIterface {
 
   @Override
   @Transactional
-  public List<Skill> saveAll(List<SkillDTO> skills) {
-    List<Skill> savedSkills = new ArrayList<>();
-    for (SkillDTO skill : skills){
-      Skill skillEntity = new Skill();
-      String imgUrl = "Hola";
-      
-      if(skill.getImage() != null){
-        imgUrl = cloudinaryController.upload("skills", skill.getImage());
-      } 
-
-      skillEntity.setName(skill.getName());
-      skillEntity.setImage(imgUrl);
-      savedSkills.add(this.save(skillEntity));
-    }
-
+  public List<Skill> saveAll(List<Skill> skills) {
+     List<Skill> savedSkills = new ArrayList<>();
+    for (Skill skill : skills){
+      savedSkills.add(this.save(skill));
+    } 
     return savedSkills;
   }
 
