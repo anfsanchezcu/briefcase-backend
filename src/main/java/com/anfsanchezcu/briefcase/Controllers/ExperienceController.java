@@ -34,8 +34,9 @@ public class ExperienceController {
   private ExperienceService Service;
 
   @GetMapping()
-  public List<ExperienceDTO> getExperiences(){
-    return Service.getExperiences();
+  public ResponseEntity<List<ExperienceDTO>> getExperiences(){
+    List<ExperienceDTO> result = Service.getExperiences();
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
   @PostMapping()

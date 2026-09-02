@@ -32,13 +32,15 @@ public class ProjectController {
   private ProjectService projectService;
 
   @GetMapping()
-  public List<ProjectPreviewtDTO> getProjects() {
-    return projectService.getProjects();
+  public ResponseEntity<List<ProjectPreviewtDTO>> getProjects() {
+    List<ProjectPreviewtDTO> result = projectService.getProjects();
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
   @GetMapping("/{id}")
-  public ProjectDTO getProject(@PathVariable Long id) {
-    return projectService.getProjectById(id);
+  public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
+    ProjectDTO result = projectService.getProjectById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(result);
   }
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -49,10 +51,7 @@ public class ProjectController {
       if (file.isEmpty() && projectDTO.getImageURL() == null) 
         throw new IllegalArgumentException("Image is required");
 
-      System.out.println("🧠BuildedProject: " + projectDTO);
       Project BuildedProject = projectService.buildProject(projectDTO,file);
-      System.out.println("🎮BuildedProject: " + BuildedProject);
-
       Project SavedProject = projectService.save(BuildedProject);
       System.out.println("SavedProject: " + SavedProject);
       return ResponseEntity.status(HttpStatus.CREATED).body(projectService.convertToDTO(SavedProject));
